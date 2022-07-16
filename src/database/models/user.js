@@ -1,5 +1,5 @@
 const User = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const user = sequelize.define('User', {
     id: {
       allowNull: false,
       type: DataTypes.INTEGER,
@@ -26,7 +26,7 @@ const User = (sequelize, DataTypes) => {
     tableName: 'Users'
   });
 
-  return User;
+  return user;
 };
 
 module.exports = User;
