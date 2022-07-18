@@ -1,5 +1,7 @@
 const express = require('express');
 
+const loginRoute = require('./routes/loginRouter');
+
 // ...
 
 const app = express();
@@ -7,6 +9,8 @@ const app = express();
 app.use(express.json());
 
 // ...
+
+app.use('/', loginRoute);
 
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
