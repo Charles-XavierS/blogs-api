@@ -8,4 +8,9 @@ const addUser = async (req, res) => {
   return res.status(409).json({ message: 'User already registered' });
 };
 
-module.exports = { addUser };
+const getAllUsers = async (_req, res) => {
+  const users = await userService.getAllUsers();
+  return res.status(200).json(users);
+};
+
+module.exports = { addUser, getAllUsers };

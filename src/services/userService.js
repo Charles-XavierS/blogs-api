@@ -36,4 +36,12 @@ const validateUser = (req, res, next) => {
   next();
 };
 
-module.exports = { addUser, validateUser };
+const getAllUsers = async () => {
+  const allUsers = await User.findAll({
+    raw: true,
+    attributes: { exclude: ['password'] },
+  });
+  return allUsers;
+};
+
+module.exports = { addUser, validateUser, getAllUsers };
