@@ -6,6 +6,7 @@ const tokenValidation = require('../middlewares/tokenValidation');
 const userRoute = Router();
 
 userRoute.get('/user', tokenValidation, userController.getAllUsers);
+userRoute.get('/user/:id', tokenValidation, userController.getById);
 userRoute.post('/user', userService.validateUser, userController.addUser);
 
 module.exports = userRoute;

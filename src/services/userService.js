@@ -44,4 +44,11 @@ const getAllUsers = async () => {
   return allUsers;
 };
 
-module.exports = { addUser, validateUser, getAllUsers };
+const getById = async ({ id: userId }) => {
+  try {
+    const { id, displayName, email, image } = await User.findOne({ where: { id: userId } });
+    return { id, displayName, email, image };
+  } catch (_e) { return null; }
+};
+
+module.exports = { addUser, validateUser, getAllUsers, getById };
