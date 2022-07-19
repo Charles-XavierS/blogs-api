@@ -3,7 +3,7 @@ const { User } = require('../database/models');
 
 const SECRET = process.env.JWT_SECRET;
 const jwtConfig = {
-  expiresIn: '1d',
+  expiresIn: '30d',
   algorithm: 'HS256',
 };
 
