@@ -5,6 +5,7 @@ const tokenValidation = require('../middlewares/tokenValidation');
 
 const categoryRoute = Router();
 
+categoryRoute.get('/categories', tokenValidation, categoryController.allCategories);
 categoryRoute.post('/categories', tokenValidation,
   categoryService.validateCategory, categoryController.addCategory);
 

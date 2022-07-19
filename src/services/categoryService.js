@@ -22,4 +22,9 @@ const addCategory = async ({ name }) => {
   return category;
 };
 
-module.exports = { validateCategory, addCategory };
+const allCategories = async () => {
+  const categories = await Category.findAll();
+  return categories;
+};
+
+module.exports = { validateCategory, addCategory, allCategories };
