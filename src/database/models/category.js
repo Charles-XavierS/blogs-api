@@ -1,8 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 const attributes = {
-  id: { primaryKey: true, type: DataTypes.INTEGER,
-  },
+  id: { primaryKey: true, type: DataTypes.INTEGER, autoIncrement: true },
   name: { type: DataTypes.STRING, }
 };
 
