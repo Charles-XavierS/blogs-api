@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
-const { BlogPost, PostCategory } = require('../database/models');
+const { BlogPost, PostCategory, User, Category } = require('../database/models');
 
 const categoryService = require('./categoryService');
 
@@ -45,6 +45,7 @@ const addPost = async (authorization, data) => {
     published,
     updated });
 
+  // https://sebhastian.com/sequelize-bulk-create/
   const categories = categoryIds.map((categoryId) => ({ postId: newPost.id, categoryId }));
   PostCategory.bulkCreate(categories);
 
@@ -52,4 +53,17 @@ const addPost = async (authorization, data) => {
   return result;
 };
 
-module.exports = { validatePost, addPost };
+// https://sebhastian.com/sequelize-include/
+const allPosts = async () => {
+  const getPosts = await BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+
+  return getPosts;
+};
+
+module.exports = { validatePost, addPost, allPosts };
