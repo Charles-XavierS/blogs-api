@@ -2,18 +2,15 @@ const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const { BlogPost, PostCategory, User, Category } = require('../database/models');
 
-const categoryService = require('./categoryService');
-
 const postSchema = Joi.object({
   title: Joi.string().required(),
   content: Joi.string().required(),
   categoryIds: Joi.array().required(),
 }).required();
 
-const existingCategory = async ({ categoryIds }) => {
-  const categories = await categoryService.allCategories();
-  const categoriesList = categories.map(({ id }) => id);
-  return categoriesList.some((id) => categoryIds.includes(id));
+const validateCategories = async (categoryIds) => {
+  const categories = await Category.findAll({ where: { id: categoryIds } });
+  return categories.length === categoryIds.length; 
 };
 
 const validatePost = async (req, res, next) => {
@@ -21,8 +18,10 @@ const validatePost = async (req, res, next) => {
   if (value.error) {
     return res.status(400).json({ message: 'Some required fields are missing' });
   }
-
-  if ((await existingCategory(req.body)) === false) {
+  
+  const { categoryIds } = req.body;
+  const isValid = await validateCategories(categoryIds);
+  if (!isValid || categoryIds.length === 0) {
     return res.status(400).json({ message: '"categoryIds" not found' });
   }
 
@@ -66,4 +65,21 @@ const allPosts = async () => {
   return getPosts;
 };
 
-module.exports = { validatePost, addPost, allPosts };
+// https://sebhastian.com/sequelize-include/
+const postById = async ({ id: postId }) => {
+  try {
+    const post = await BlogPost.findOne({
+      where: { id: postId },
+      include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+
+        { model: Category, as: 'categories', through: { attributes: [] } },
+      ],
+
+    });
+
+    return post;
+  } catch (_e) { return null; }
+};
+
+module.exports = { validatePost, addPost, allPosts, postById };
