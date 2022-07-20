@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const attributes = {
   id: {
+    autoIncrement: true,
     type: DataTypes.INTEGER,
     primaryKey: true,
   },
@@ -12,6 +13,7 @@ const attributes = {
     type: DataTypes.STRING,
   },
   userId: {
+    allowNull: false,
     type: DataTypes.INTEGER,
     foreignKey: true,
   },
